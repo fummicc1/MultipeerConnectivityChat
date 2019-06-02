@@ -1,5 +1,4 @@
 import UIKit
-import MultipeerConnectivity
 
 class ChatViewController: UIViewController {
 
