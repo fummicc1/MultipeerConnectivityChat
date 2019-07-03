@@ -1,17 +1,18 @@
 import Foundation
 import MultipeerConnectivity
 
-protocol ChatControlAPI {
-    func connectedDeviceChanged(service: MultipeerChatService, devices: [String])    
-    func textRecieved(service: MultipeerChatService, text: String)
+protocol QuizSessionAPI: class {
+    func connectedDeviceChanged(service: MultipeerQuizService, devices: [String])    
+    func quizRecieved(service: MultipeerQuizService, data: SharedData)
 }
 
-class MultipeerChatService: NSObject {
+class MultipeerQuizService: NSObject {
     
-    static let ChatServiceType = "chat-service" // this is an identity less than 15 characters long.
+    static let QuizServiceType = "quiz-service" // this is an identity less than 15 characters long.
     
-    var delegate: ChatControlAPI?
+    var delegate: QuizSessionAPI?
     private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
+    private var currentBattleID: MCPeerID?
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
@@ -22,8 +23,8 @@ class MultipeerChatService: NSObject {
     }()
     
     override init() {
-        serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: nil, serviceType: MultipeerChatService.ChatServiceType)
-        serviceBrowser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: MultipeerChatService.ChatServiceType)
+        serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: nil, serviceType: MultipeerQuizService.QuizServiceType)
+        serviceBrowser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: MultipeerQuizService.QuizServiceType)
         super.init()
         serviceAdvertiser.delegate = self
         serviceAdvertiser.startAdvertisingPeer()
@@ -37,31 +38,37 @@ class MultipeerChatService: NSObject {
     }
 }
 
-extension MultipeerChatService: MCNearbyServiceAdvertiserDelegate {
+extension MultipeerQuizService: MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        invitationHandler(true, session)
+        if currentBattleID == nil {
+            invitationHandler(true, session)
+        }
     }
 }
 
-extension MultipeerChatService: MCNearbyServiceBrowserDelegate {
+extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        if currentBattleID != nil { return }
+        currentBattleID = peerID
         browser.invitePeer(peerID, to: session, withContext: nil, timeout: 5)
     }
-    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {}
+    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        if let currentBattleID = currentBattleID, !session.connectedPeers.contains(currentBattleID) {
+            self.currentBattleID = nil
+        }
+    }
 }
 
-extension MultipeerChatService: MCSessionDelegate {
+extension MultipeerQuizService: MCSessionDelegate {
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         delegate?.connectedDeviceChanged(service: self, devices: session.connectedPeers.map{$0.displayName})
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        guard let text = String(data: data, encoding: .utf8) else {
-            return
-        }
-        delegate?.textRecieved(service: self, text: text)
+        guard let data = try? JSONDecoder().decode(SharedData.self, from: data) else { return }
+        delegate?.quizRecieved(service: self, data: data)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -74,7 +81,7 @@ extension MultipeerChatService: MCSessionDelegate {
     }
 }
 
-extension MultipeerChatService {
+extension MultipeerQuizService {
     func send(text: String) {
         if session.connectedPeers.count == 0 { return }
         try! session.send(text.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)

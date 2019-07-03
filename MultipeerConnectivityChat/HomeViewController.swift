@@ -1,12 +1,12 @@
 import UIKit
 
-class ChatViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     @IBOutlet weak var chatTextView: UITextView! // shared interface among all users.
     @IBOutlet weak var chatTextField: UITextField! //  Userself can input text.
     @IBOutlet weak var connectedDevicesLabel: UILabel! // show current connected devices.
     
-    private let chatService = MultipeerChatService()        
+    private let chatService = MultipeerQuizService()        
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,7 @@ class ChatViewController: UIViewController {
     }
 }
 
-extension ChatViewController: UITextFieldDelegate {
+extension HomeViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -36,15 +36,19 @@ extension ChatViewController: UITextFieldDelegate {
     }
 }
 
-extension ChatViewController: ChatControlAPI {
+extension HomeViewController: QuizSessionAPI {
+    func quizRecieved(service: MultipeerQuizService, data: SharedData) {
+        
+    }
     
-    func connectedDeviceChanged(service: MultipeerChatService, devices: [String]) {
+    
+    func connectedDeviceChanged(service: MultipeerQuizService, devices: [String]) {
         DispatchQueue.main.async {
             self.connectedDevicesLabel.text = "Connected devices: \(devices.joined(separator: ","))"
         }
     }
     
-    func textRecieved(service: MultipeerChatService, text: String) {
+    func textRecieved(service: MultipeerQuizService, text: String) {
         DispatchQueue.main.async {
             self.chatTextView.text += text
         }
