@@ -6,11 +6,16 @@ protocol QuizSessionAPI: class {
     func quizRecieved(service: MultipeerQuizService, data: SharedData)
 }
 
+protocol MCSessionAPI: class {
+    func connectionEstablished(peerID: MCPeerID)
+}
+
 class MultipeerQuizService: NSObject {
     
     static let QuizServiceType = "quiz-service" // this is an identity less than 15 characters long.
     
-    var delegate: QuizSessionAPI?
+    weak var quizDelegate: QuizSessionAPI?
+    weak var connectionDelegate: MCSessionAPI?
     private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
     private var currentBattleID: MCPeerID?
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
@@ -63,12 +68,12 @@ extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
 extension MultipeerQuizService: MCSessionDelegate {
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        delegate?.connectedDeviceChanged(service: self, devices: session.connectedPeers.map{$0.displayName})
+        quizDelegate?.connectedDeviceChanged(service: self, devices: session.connectedPeers.map{$0.displayName})
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         guard let data = try? JSONDecoder().decode(SharedData.self, from: data) else { return }
-        delegate?.quizRecieved(service: self, data: data)
+        quizDelegate?.quizRecieved(service: self, data: data)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -82,8 +87,10 @@ extension MultipeerQuizService: MCSessionDelegate {
 }
 
 extension MultipeerQuizService {
-    func send(text: String) {
-        if session.connectedPeers.count == 0 { return }
-        try! session.send(text.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+    func send(quiz: SharedData) {
+        guard let currentBattleID = currentBattleID, let data = try? JSONEncoder().encode(quiz) else {
+            return
+        }
+        try! session.send(data, toPeers: [currentBattleID], with: .reliable)
     }
 }

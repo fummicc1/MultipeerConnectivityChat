@@ -62,12 +62,12 @@
 		D341B35422A3FE4000310B75 /* MultipeerConnectivityChat */ = {
 			isa = PBXGroup;
 			children = (
-				D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */,
 				D341B36122A3FE4100310B75 /* Info.plist */,
 				D341B35522A3FE4000310B75 /* AppDelegate.swift */,
 				D341B36922A4027E00310B75 /* HomeViewController.swift */,
-				D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */,
+				D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */,
 				D3C18A5F22CC8A300071EA29 /* QuizModel.swift */,
+				D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */,
 				D3C18A6122CC8B6B0071EA29 /* SharedData.swift */,
 				D341B35C22A3FE4100310B75 /* Assets.xcassets */,
 				D341B35E22A3FE4100310B75 /* LaunchScreen.storyboard */,
