@@ -1,13 +1,11 @@
 import UIKit
+import MultipeerConnectivity
+import PKHUD
 
 class HomeViewController: UIViewController {
-
-    @IBOutlet weak var chatTextView: UITextView! // shared interface among all users.
-    @IBOutlet weak var chatTextField: UITextField! //  Userself can input text.
-    @IBOutlet weak var connectedDevicesLabel: UILabel! // show current connected devices.
     
     private var quizModel: QuizModel?
-    weak var quizViewController: QuizViewController?
+    var quizViewController: QuizViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,10 +13,9 @@ class HomeViewController: UIViewController {
     }
     
     func setup() {
-        let quizViewController = QuizViewController(nibName: "", bundle: nil)
-        quizModel = QuizModel(delegate: quizViewController, service: MultipeerQuizService())
+        quizViewController = storyboard?.instantiateViewController(withIdentifier: "quizViewController") as? QuizViewController
+        quizModel = QuizModel(quizDelegate: quizViewController!, service: MultipeerQuizService(), connectionDelegate: self)
     }
-    // send text to others via P2P(BlueTooth).
 }
 
 extension HomeViewController: UITextFieldDelegate {
@@ -28,6 +25,18 @@ extension HomeViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+    }
+}
+
+extension HomeViewController: MCSessionAPI {
+    func connectionEstablished(service: MultipeerQuizService, peerID: MCPeerID) {
+         DispatchQueue.main.async {
+            HUD.flash(.label("接続完了"))
+            guard let quizViewController = self.quizViewController else { return }
+            self.present(quizViewController, animated: true, completion: {
+                self.quizModel?.stopObseving()
+            })
+        }
     }
 }
 

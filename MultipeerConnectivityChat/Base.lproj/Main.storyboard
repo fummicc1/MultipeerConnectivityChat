@@ -10,32 +10,23 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="MultipeerConnectivityChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OfS-k1-ohf">
-                                <rect key="frame" x="107" y="398" width="200" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="6wf-pS-4dM"/>
-                                    <constraint firstAttribute="height" constant="100" id="VQg-wq-K9e"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
-                                <state key="normal" title="START"/>
-                                <connections>
-                                    <segue destination="bES-7E-snk" kind="presentation" modalTransitionStyle="crossDissolve" id="b89-jV-pae"/>
-                                </connections>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="クイズ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAF-CX-1ku">
+                                <rect key="frame" x="51" y="188" width="313" height="99"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="64"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="OfS-k1-ohf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8o2-yT-U7Y"/>
-                            <constraint firstItem="OfS-k1-ohf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="vt1-9y-mov"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -46,7 +37,7 @@
         <!--Quiz View Controller-->
         <scene sceneID="EFh-Cr-IhY">
             <objects>
-                <viewController id="bES-7E-snk" customClass="QuizViewController" customModule="MultipeerConnectivityChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="quizViewController" id="bES-7E-snk" customClass="QuizViewController" customModule="MultipeerConnectivityChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c0A-re-ToJ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,18 +49,26 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zmS-X4-bVr">
-                                <rect key="frame" x="0.0" y="696" width="414" height="200"/>
+                                <rect key="frame" x="0.0" y="896" width="414" height="0.0"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="VZ1-Dc-KXi">
-                                        <rect key="frame" x="16" y="16" width="382" height="168"/>
+                                        <rect key="frame" x="16" y="16" width="382" height="80"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QeW-YE-yhO">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="76"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="32"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="tappedAnswerButtonWithSender:" destination="bES-7E-snk" eventType="touchUpInside" id="dNA-nh-RM5"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d7Q-eI-W5k">
-                                                <rect key="frame" x="0.0" y="92" width="382" height="76"/>
+                                                <rect key="frame" x="0.0" y="48" width="382" height="32"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="tappedAnswerButtonWithSender:" destination="bES-7E-snk" eventType="touchUpInside" id="QaK-ZG-vBQ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -79,7 +78,7 @@
                                     <constraint firstItem="VZ1-Dc-KXi" firstAttribute="leading" secondItem="zmS-X4-bVr" secondAttribute="leading" constant="16" id="8ID-pY-Z96"/>
                                     <constraint firstAttribute="bottom" secondItem="VZ1-Dc-KXi" secondAttribute="bottom" constant="16" id="RPb-ui-wlU"/>
                                     <constraint firstItem="VZ1-Dc-KXi" firstAttribute="top" secondItem="zmS-X4-bVr" secondAttribute="top" constant="16" id="Tqb-nV-1eo"/>
-                                    <constraint firstAttribute="height" constant="200" id="bwx-Ql-VGJ"/>
+                                    <constraint firstAttribute="height" id="bwx-Ql-VGJ"/>
                                     <constraint firstAttribute="trailing" secondItem="VZ1-Dc-KXi" secondAttribute="trailing" constant="16" id="xar-nu-qXC"/>
                                 </constraints>
                             </view>
@@ -89,30 +88,47 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kcN-FQ-xgO">
-                                <rect key="frame" x="102.5" y="413" width="209" height="70"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
-                                <state key="normal" title="タッチ！!"/>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opJ-9F-KHq">
+                                <rect key="frame" x="49.5" y="400.5" width="315.5" height="95.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="たっぷして回答">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="33" name="HiraginoSans-W6"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="🤲">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="80" name=".AppleColorEmojiUI"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="REk-T4-kNS" firstAttribute="top" secondItem="OHI-M2-KDA" secondAttribute="bottom" constant="32" id="3T8-xe-Ufo"/>
-                            <constraint firstItem="kcN-FQ-xgO" firstAttribute="centerX" secondItem="c0A-re-ToJ" secondAttribute="centerX" id="3ZD-FG-5XT"/>
                             <constraint firstItem="jsQ-yV-KQw" firstAttribute="trailing" secondItem="zmS-X4-bVr" secondAttribute="trailing" id="8pu-pj-rfj"/>
                             <constraint firstItem="jsQ-yV-KQw" firstAttribute="trailing" secondItem="OHI-M2-KDA" secondAttribute="trailing" constant="32" id="PwD-w5-Shr"/>
                             <constraint firstItem="OHI-M2-KDA" firstAttribute="top" secondItem="jsQ-yV-KQw" secondAttribute="top" constant="32" id="WPz-my-h9H"/>
                             <constraint firstItem="zmS-X4-bVr" firstAttribute="leading" secondItem="jsQ-yV-KQw" secondAttribute="leading" id="Wdt-SV-0bL"/>
+                            <constraint firstItem="opJ-9F-KHq" firstAttribute="centerY" secondItem="c0A-re-ToJ" secondAttribute="centerY" id="Yx3-23-n07"/>
                             <constraint firstItem="REk-T4-kNS" firstAttribute="leading" secondItem="jsQ-yV-KQw" secondAttribute="leading" constant="32" id="ZFR-rM-FBs"/>
                             <constraint firstItem="jsQ-yV-KQw" firstAttribute="trailing" secondItem="REk-T4-kNS" secondAttribute="trailing" constant="32" id="nea-OP-fhc"/>
+                            <constraint firstItem="opJ-9F-KHq" firstAttribute="centerX" secondItem="c0A-re-ToJ" secondAttribute="centerX" id="t8Y-lE-KzV"/>
                             <constraint firstItem="OHI-M2-KDA" firstAttribute="leading" secondItem="jsQ-yV-KQw" secondAttribute="leading" constant="32" id="y6x-Ii-hAg"/>
-                            <constraint firstItem="kcN-FQ-xgO" firstAttribute="centerY" secondItem="c0A-re-ToJ" secondAttribute="centerY" id="yaK-hr-n2S"/>
                             <constraint firstAttribute="bottom" secondItem="zmS-X4-bVr" secondAttribute="bottom" id="yny-fo-L9K"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jsQ-yV-KQw"/>
                     </view>
                     <connections>
                         <outlet property="answerViewHeight" destination="bwx-Ql-VGJ" id="M6q-7G-8eT"/>
+                        <outlet property="choiceButton1" destination="QeW-YE-yhO" id="M8m-IC-fay"/>
+                        <outlet property="choiceButton2" destination="d7Q-eI-W5k" id="j7s-VS-uiV"/>
                         <outlet property="quizChapterLabel" destination="OHI-M2-KDA" id="UAe-Pu-n5o"/>
                         <outlet property="quizContentLabel" destination="REk-T4-kNS" id="ims-Gg-y8E"/>
                     </connections>

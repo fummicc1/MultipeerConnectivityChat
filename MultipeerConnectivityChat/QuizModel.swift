@@ -2,16 +2,23 @@ import Foundation
 
 class QuizModel {
     
-    private var quizData: SharedData?
-    private(set) var battlerData: SharedData?
+    var user: User?
+    var opponent: User?
     private let service: MultipeerQuizService    
-    private weak var delegate: QuizSessionAPI?
+    private weak var quizDelegate: QuizSessionAPI?
     
-    init(delegate: QuizSessionAPI, service: MultipeerQuizService) {
-        self.delegate = delegate
+    init(quizDelegate: QuizSessionAPI, service: MultipeerQuizService, connectionDelegate: MCSessionAPI) {
+        self.quizDelegate = quizDelegate
         self.service = service
+        service.connectionDelegate = connectionDelegate
     }
     
     public func shareData() {
+        guard let user = user else { return }
+        service.send(user: user)
+    }
+    
+    public func stopObseving() {
+        service.stopObseving()
     }
 }
