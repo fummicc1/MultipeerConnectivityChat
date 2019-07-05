@@ -2,23 +2,34 @@ import Foundation
 
 class QuizModel {
     
-    var user: User?
+    var user: User
     var opponent: User?
-    private let service: MultipeerQuizService    
-    private weak var quizDelegate: QuizSessionAPI?
+    let service: MultipeerQuizService
     
-    init(quizDelegate: QuizSessionAPI, service: MultipeerQuizService, connectionDelegate: MCSessionAPI) {
-        self.quizDelegate = quizDelegate
+    init(
+        quizDelegate: QuizSessionAPI,
+        service: MultipeerQuizService,
+        connectionDelegate: MCSessionAPI
+        ) {
         self.service = service
+        service.quizDelegate = quizDelegate
         service.connectionDelegate = connectionDelegate
+        self.user = User(deviceName: service.myPeerID.displayName)
     }
     
-    public func shareData() {
-        guard let user = user else { return }
-        service.send(user: user)
+    public func sendQuiz(quizList: [QuizData]) {
+        service.send(data: quizList)
+    }
+    
+    public func sendMyData() {
+        service.send(data: user)
     }
     
     public func stopObseving() {
         service.stopObseving()
+    }
+    
+    public func startObserving(isHost: Bool) {
+        service.startObserving(isHost: isHost)
     }
 }

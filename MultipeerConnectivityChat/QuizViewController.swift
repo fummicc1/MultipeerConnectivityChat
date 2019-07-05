@@ -1,23 +1,27 @@
 import UIKit
 import PKHUD
+import MultipeerConnectivity
 
 class QuizViewController: UIViewController {
 
     @IBOutlet private weak var quizChapterLabel: UILabel!
     @IBOutlet private weak var quizContentLabel: UILabel!
     @IBOutlet private weak var answerViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var answerView: UIView!
     @IBOutlet private weak var choiceButton1: UIButton!
     @IBOutlet private weak var choiceButton2: UIButton!
     
     var model: QuizModel?
     
+    var opponentAnsweredText: String = "問1." {
+        didSet {
+            quizChapterLabel.text = opponentAnsweredText
+        }
+    }
     var quizList: [QuizData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissChoice))
-        swipeGesture.direction = .down        
-        view.addGestureRecognizer(swipeGesture)
         populateQuizData()
         startQuiz()
     }
@@ -26,7 +30,7 @@ class QuizViewController: UIViewController {
         super.touchesBegan(touches, with: event)
         let touch = touches.first!
         if touch.phase == .began {
-            showChoice()
+            manageViewHeight()
         }
     }
     
@@ -81,33 +85,25 @@ class QuizViewController: UIViewController {
         quizList.shuffle()
     }
     
-    @objc func dismissChoice() {
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.2) {
-            self.answerViewHeight.constant = 0
-        }
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
-    }
-    
-    func showChoice() {
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.2) {
-            self.answerViewHeight.constant = 200
-        }
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
+    func manageViewHeight() {
+        self.answerViewHeight.constant += self.answerViewHeight.constant == 0 ? 300 : -300
+        UIView.transition(with: answerView, duration: 0.3, options: [.curveEaseIn], animations: {
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     func startQuiz() {
-        
-        dismissChoice()
-        
         setTag()
-        let quiz = quizList.first!
+        if model?.user.isHost == true {
+            quizContentLabel.text = ""
+            model?.sendQuiz(quizList: quizList)
+        }
+    }
+    
+    func displayQuiz(_ quizList: [QuizData]) {
         self.quizChapterLabel.text = "問\(10 - self.quizList.count + 1)."
+        let quiz = quizList.first!
         if self.choiceButton1.tag == 10 {
             self.choiceButton1.setTitle(quiz.answer, for: .normal)
             self.choiceButton2.setTitle(quiz.fault, for: .normal)
@@ -115,7 +111,6 @@ class QuizViewController: UIViewController {
             self.choiceButton1.setTitle(quiz.fault, for: .normal)
             self.choiceButton2.setTitle(quiz.answer, for: .normal)
         }
-        quizContentLabel.text = ""
         for c in quiz.question {
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
             quizContentLabel.text?.append(c)
@@ -130,22 +125,33 @@ class QuizViewController: UIViewController {
     
     @IBAction func tappedAnswerButton(sender: UIButton) {
         if sender.tag == 10 {
-            model?.user?.score += 10
+            model?.user.score += 10
             HUD.show(.label("正解！"))
             HUD.hide(afterDelay: 1.0)
         } else if sender.tag == 11 {
             HUD.show(.label("不正解..."))
             HUD.hide(afterDelay: 1.0)
         }
+        model?.user.answeredDate = Date()
+        model?.sendMyData()
         quizList.removeFirst()
-        if quizList.isEmpty {
-        } else {
-            startQuiz()
-        }
+        HUD.show(.label("通信中..."))
     }
 }
 
 extension QuizViewController: QuizSessionAPI {
+    func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID) {
+        self.quizList = data
+        DispatchQueue.main.async {
+            self.quizContentLabel.text = ""
+            self.displayQuiz(self.quizList)
+            if self.model?.user.isHost != true {
+                let data = try! JSONEncoder().encode(data)
+                try! self.model?.service.session.send(data, toPeers: [peerID], with: .reliable)
+            }
+        }
+    }
+    
     func opponentDataRecieved(service: MultipeerQuizService, data: User) {
         model?.opponent = data
     }

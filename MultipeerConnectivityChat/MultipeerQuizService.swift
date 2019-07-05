@@ -3,6 +3,7 @@ import MultipeerConnectivity
 
 protocol QuizSessionAPI: class {
     func opponentDataRecieved(service: MultipeerQuizService, data: User)
+    func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID)
 }
 
 protocol MCSessionAPI: class {
@@ -15,8 +16,8 @@ class MultipeerQuizService: NSObject {
     
     weak var quizDelegate: QuizSessionAPI?
     weak var connectionDelegate: MCSessionAPI?
-    private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
-    private var currentBattleID: MCPeerID?
+    let myPeerID = MCPeerID(displayName: UIDevice.current.name)
+    var currentBattleID: MCPeerID?
     private let serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     
@@ -31,14 +32,19 @@ class MultipeerQuizService: NSObject {
         serviceBrowser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: MultipeerQuizService.QuizServiceType)        
         super.init()
         serviceAdvertiser.delegate = self
-        serviceAdvertiser.startAdvertisingPeer()
         serviceBrowser.delegate = self
-        serviceBrowser.startBrowsingForPeers()
     }
     
     deinit {
-        serviceAdvertiser.stopAdvertisingPeer()
-        serviceBrowser.stopBrowsingForPeers()
+        stopObseving()
+    }
+    
+    public func startObserving(isHost: Bool) {
+        if isHost {
+            serviceAdvertiser.startAdvertisingPeer()
+        } else {
+            serviceBrowser.startBrowsingForPeers()
+        }
     }
     
     public func stopObseving() {
@@ -61,7 +67,7 @@ extension MultipeerQuizService: MCNearbyServiceAdvertiserDelegate {
 extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         if currentBattleID != nil { return }
-        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 5)
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 5)        
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -76,13 +82,16 @@ extension MultipeerQuizService: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         if state == .connected {
             currentBattleID = peerID
-            connectionDelegate?.connectionEstablished(service: self, peerID: peerID)            
+            connectionDelegate?.connectionEstablished(service: self, peerID: peerID)
         }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        guard let data = try? JSONDecoder().decode(User.self, from: data) else { return }
-        quizDelegate?.opponentDataRecieved(service: self, data: data)
+        if let opponent = try? JSONDecoder().decode(User.self, from: data) {
+            quizDelegate?.opponentDataRecieved(service: self, data: opponent)
+        } else if let quizList = try? JSONDecoder().decode([QuizData].self, from: data) {
+            quizDelegate?.quizListRecieved(service: self, data: quizList, from: peerID)
+        }
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -96,8 +105,8 @@ extension MultipeerQuizService: MCSessionDelegate {
 }
 
 extension MultipeerQuizService {
-    func send(user: User) {
-        guard let currentBattleID = currentBattleID, let data = try? JSONEncoder().encode(user) else {
+    func send<T: Codable>(data: T) {
+        guard let currentBattleID = currentBattleID, let data = try? JSONEncoder().encode(data) else {
             return
         }
         try! session.send(data, toPeers: [currentBattleID], with: .reliable)

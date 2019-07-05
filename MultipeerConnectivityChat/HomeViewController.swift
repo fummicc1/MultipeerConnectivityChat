@@ -7,24 +7,30 @@ class HomeViewController: UIViewController {
     private var quizModel: QuizModel?
     var quizViewController: QuizViewController?
     
+    @IBOutlet var joinRoomButton: UIButton!
+    @IBOutlet var createRoomButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        
+        joinRoomButton.layer.cornerRadius = 30
+        createRoomButton.layer.cornerRadius = 30
     }
     
     func setup() {
         quizViewController = storyboard?.instantiateViewController(withIdentifier: "quizViewController") as? QuizViewController
         quizModel = QuizModel(quizDelegate: quizViewController!, service: MultipeerQuizService(), connectionDelegate: self)
     }
-}
-
-extension HomeViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    
+    @IBAction func tappedCreateRoomButton() {
+        quizModel?.user.isHost = true
+        quizModel?.startObserving(isHost: true)
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    @IBAction func tappedJoinRoomButton() {
+        quizModel?.user.isHost = false
+        quizModel?.startObserving(isHost: false)
     }
 }
 
@@ -33,28 +39,10 @@ extension HomeViewController: MCSessionAPI {
          DispatchQueue.main.async {
             HUD.flash(.label("接続完了"))
             guard let quizViewController = self.quizViewController else { return }
+            quizViewController.model = self.quizModel
             self.present(quizViewController, animated: true, completion: {
                 self.quizModel?.stopObseving()
             })
         }
     }
 }
-
-//extension HomeViewController: QuizSessionAPI {
-//    func quizRecieved(service: MultipeerQuizService, data: SharedData) {
-//
-//    }
-//
-//
-//    func connectedDeviceChanged(service: MultipeerQuizService, devices: [String]) {
-//        DispatchQueue.main.async {
-//            self.connectedDevicesLabel.text = "Connected devices: \(devices.joined(separator: ","))"
-//        }
-//    }
-//
-//    func textRecieved(service: MultipeerQuizService, text: String) {
-//        DispatchQueue.main.async {
-//            self.chatTextView.text += text
-//        }
-//    }
-//}
