@@ -25,6 +25,10 @@ class QuizModel {
         service.send(data: user)
     }
     
+    public func requestStartQuizToHost() {        
+        service.send(data: Data())
+    }
+    
     public func stopObseving() {
         service.stopObseving()
     }

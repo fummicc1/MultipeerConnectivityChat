@@ -4,6 +4,7 @@ import MultipeerConnectivity
 protocol QuizSessionAPI: class {
     func opponentDataRecieved(service: MultipeerQuizService, data: User)
     func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID)
+    func requestStartQuizIfHost(service: MultipeerQuizService)
 }
 
 protocol MCSessionAPI: class {
@@ -91,6 +92,8 @@ extension MultipeerQuizService: MCSessionDelegate {
             quizDelegate?.opponentDataRecieved(service: self, data: opponent)
         } else if let quizList = try? JSONDecoder().decode([QuizData].self, from: data) {
             quizDelegate?.quizListRecieved(service: self, data: quizList, from: peerID)
+        } else if let emptyData = try? JSONDecoder().decode(Data.self, from: data), emptyData.count == 0 {
+            quizDelegate?.requestStartQuizIfHost(service: self)
         }
     }
     

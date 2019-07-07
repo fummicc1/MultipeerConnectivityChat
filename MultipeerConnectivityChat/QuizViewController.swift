@@ -3,7 +3,7 @@ import PKHUD
 import MultipeerConnectivity
 
 class QuizViewController: UIViewController {
-
+    
     @IBOutlet private weak var quizChapterLabel: UILabel!
     @IBOutlet private weak var quizContentLabel: UILabel!
     @IBOutlet private weak var answerViewHeight: NSLayoutConstraint!
@@ -128,31 +128,59 @@ class QuizViewController: UIViewController {
             model?.user.score += 10
             HUD.show(.label("正解！"))
             HUD.hide(afterDelay: 1.0)
+            model?.user.haveChosenCorrectAnswer = true
         } else if sender.tag == 11 {
             HUD.show(.label("不正解..."))
             HUD.hide(afterDelay: 1.0)
+            model?.user.haveChosenCorrectAnswer = false
         }
         model?.user.answeredDate = Date()
-        model?.sendMyData()
         quizList.removeFirst()
         HUD.show(.label("通信中..."))
+        model?.sendMyData()
     }
 }
 
 extension QuizViewController: QuizSessionAPI {
+    
+    func requestStartQuizIfHost(service: MultipeerQuizService) {
+        DispatchQueue.main.async {
+            if self.model?.user.isHost == true {                
+                self.startQuiz()
+            }
+        }
+    }
+    
     func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID) {
         self.quizList = data
         DispatchQueue.main.async {
             self.quizContentLabel.text = ""
             self.displayQuiz(self.quizList)
-            if self.model?.user.isHost != true {
-                let data = try! JSONEncoder().encode(data)
-                try! self.model?.service.session.send(data, toPeers: [peerID], with: .reliable)
+            DispatchQueue.global().async {
+                if self.model?.user.isHost != true {
+                    let data = try! JSONEncoder().encode(data)
+                    try! self.model?.service.session.send(data, toPeers: [peerID], with: .reliable)
+                }
             }
         }
     }
     
     func opponentDataRecieved(service: MultipeerQuizService, data: User) {
         model?.opponent = data
+        DispatchQueue.main.async {
+            if data.haveChosenCorrectAnswer == true {
+                HUD.show(.label("相手が先に回答しました!\n次のバトルへ移ります。"))
+                HUD.hide(afterDelay: 1.0, completion: { success in
+                    if success, self.model?.user.isHost == true {
+                        self.startQuiz()
+                    } else if success {
+                        self.model?.requestStartQuizToHost()
+                    }
+                })
+            } else {
+                HUD.show(.label("相手が間違えました!\nチャンスです。ゆっくり考えましょう！"))
+                HUD.hide(afterDelay: 1.0)
+            }
+        }
     }
 }
