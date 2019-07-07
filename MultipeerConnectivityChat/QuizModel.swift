@@ -21,8 +21,8 @@ class QuizModel {
         service.send(data: quizList)
     }
     
-    public func sendMyData() {
-        service.send(data: user)
+    public func sendIfIAmHost(_ isHost: IsHost) {
+        service.send(data: isHost)
     }
     
     public func requestStartQuizToHost() {        

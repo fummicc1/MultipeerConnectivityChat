@@ -95,7 +95,7 @@ class QuizViewController: UIViewController {
     
     func startQuiz() {
         setTag()
-        if model?.user.isHost == true {
+        if model?.user.isHost?.rawValue == true {
             quizContentLabel.text = ""
             model?.sendQuiz(quizList: quizList)
         }
@@ -135,9 +135,8 @@ class QuizViewController: UIViewController {
             model?.user.haveChosenCorrectAnswer = false
         }
         model?.user.answeredDate = Date()
-        quizList.removeFirst()
-        HUD.show(.label("通信中..."))
-        model?.sendMyData()
+        quizList.removeFirst()        
+        model?.sendIfIAmHost(model!.user.isHost!)
     }
 }
 
@@ -145,8 +144,18 @@ extension QuizViewController: QuizSessionAPI {
     
     func requestStartQuizIfHost(service: MultipeerQuizService) {
         DispatchQueue.main.async {
-            if self.model?.user.isHost == true {                
+            if self.model?.user.isHost?.rawValue == true {
                 self.startQuiz()
+            }
+        }
+    }
+    
+    func informBattlerAlreadyCleared(service: MultipeerQuizService) {
+        DispatchQueue.main.async {
+            if self.model?.user.isHost?.rawValue != true {
+                HUD.show(.label("相手が先に回答しました..."))
+                HUD.hide(afterDelay: 1.0)
+                self.model?.sendIfIAmHost(IsHost(rawValue: false))
             }
         }
     }
@@ -154,14 +163,14 @@ extension QuizViewController: QuizSessionAPI {
     func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID) {
         self.quizList = data
         DispatchQueue.main.async {
-            self.quizContentLabel.text = ""
-            self.displayQuiz(self.quizList)
             DispatchQueue.global().async {
-                if self.model?.user.isHost != true {
+                if self.model?.user.isHost?.rawValue != true {
                     let data = try! JSONEncoder().encode(data)
                     try! self.model?.service.session.send(data, toPeers: [peerID], with: .reliable)
                 }
             }
+            self.quizContentLabel.text = ""
+            self.displayQuiz(self.quizList)
         }
     }
     
@@ -171,7 +180,7 @@ extension QuizViewController: QuizSessionAPI {
             if data.haveChosenCorrectAnswer == true {
                 HUD.show(.label("相手が先に回答しました!\n次のバトルへ移ります。"))
                 HUD.hide(afterDelay: 1.0, completion: { success in
-                    if success, self.model?.user.isHost == true {
+                    if success, self.model?.user.isHost?.rawValue == true {
                         self.startQuiz()
                     } else if success {
                         self.model?.requestStartQuizToHost()

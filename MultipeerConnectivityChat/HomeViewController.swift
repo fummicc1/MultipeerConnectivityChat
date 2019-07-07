@@ -24,12 +24,12 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func tappedCreateRoomButton() {
-        quizModel?.user.isHost = true
+        quizModel?.user.isHost = IsHost(rawValue: true)
         quizModel?.startObserving(isHost: true)
     }
     
     @IBAction func tappedJoinRoomButton() {
-        quizModel?.user.isHost = false
+        quizModel?.user.isHost = IsHost(rawValue: false)
         quizModel?.startObserving(isHost: false)
     }
 }

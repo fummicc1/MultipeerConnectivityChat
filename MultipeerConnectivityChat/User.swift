@@ -6,11 +6,15 @@ struct User: Codable {
     let deviceName: String
     var haveChosenCorrectAnswer: Bool?
     var answeredDate: Date?
-    var isHost: Bool?
+    var isHost: IsHost?
     
     init(deviceName: String) {
         score = 0
         havefinishedAllQuestions = false
         self.deviceName = deviceName
     }
+}
+
+struct IsHost: Codable {
+    let rawValue: Bool
 }
