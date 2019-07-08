@@ -3,27 +3,45 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F5AF6E8EA9817B68DD0D0CB /* Pods_MultipeerConnectivityChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59429BC8B1379C4C3F2A9CAC /* Pods_MultipeerConnectivityChat.framework */; };
+		D33A7A5222CD9CC8006B2918 /* QuizData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33A7A5122CD9CC8006B2918 /* QuizData.swift */; };
 		D341B35622A3FE4000310B75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B35522A3FE4000310B75 /* AppDelegate.swift */; };
 		D341B35B22A3FE4000310B75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D341B35922A3FE4000310B75 /* Main.storyboard */; };
 		D341B35D22A3FE4100310B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D341B35C22A3FE4100310B75 /* Assets.xcassets */; };
 		D341B36022A3FE4100310B75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D341B35E22A3FE4100310B75 /* LaunchScreen.storyboard */; };
-		D341B36822A3FEFB00310B75 /* MultipeerChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B36722A3FEFB00310B75 /* MultipeerChatService.swift */; };
-		D341B36A22A4027E00310B75 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B36922A4027E00310B75 /* ChatViewController.swift */; };
+		D341B36A22A4027E00310B75 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B36922A4027E00310B75 /* HomeViewController.swift */; };
+		D393540122D2E717001D8CD1 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393540022D2E717001D8CD1 /* ResultViewController.swift */; };
+		D393540322D2E74C001D8CD1 /* BattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393540222D2E74C001D8CD1 /* BattleManager.swift */; };
+		D39AAC5522D34C6500670C59 /* Array+isNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39AAC5422D34C6500670C59 /* Array+isNotEmpty.swift */; };
+		D39AAC5722D3518C00670C59 /* AnimationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39AAC5622D3518C00670C59 /* AnimationLabel.swift */; };
+		D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */; };
+		D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6122CC8B6B0071EA29 /* User.swift */; };
+		D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		59429BC8B1379C4C3F2A9CAC /* Pods_MultipeerConnectivityChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultipeerConnectivityChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipeerConnectivityChat.debug.xcconfig"; path = "Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat.debug.xcconfig"; sourceTree = "<group>"; };
+		AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipeerConnectivityChat.release.xcconfig"; path = "Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat.release.xcconfig"; sourceTree = "<group>"; };
+		D33A7A5122CD9CC8006B2918 /* QuizData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizData.swift; sourceTree = "<group>"; };
 		D341B35222A3FE4000310B75 /* MultipeerConnectivityChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipeerConnectivityChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D341B35522A3FE4000310B75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D341B35A22A3FE4000310B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D341B35C22A3FE4100310B75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D341B35F22A3FE4100310B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D341B36122A3FE4100310B75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D341B36722A3FEFB00310B75 /* MultipeerChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerChatService.swift; sourceTree = "<group>"; };
-		D341B36922A4027E00310B75 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		D341B36922A4027E00310B75 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D393540022D2E717001D8CD1 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		D393540222D2E74C001D8CD1 /* BattleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleManager.swift; sourceTree = "<group>"; };
+		D39AAC5422D34C6500670C59 /* Array+isNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+isNotEmpty.swift"; sourceTree = "<group>"; };
+		D39AAC5622D3518C00670C59 /* AnimationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationLabel.swift; sourceTree = "<group>"; };
+		D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
+		D3C18A6122CC8B6B0071EA29 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipeerQuizService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +49,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F5AF6E8EA9817B68DD0D0CB /* Pods_MultipeerConnectivityChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		778E15F3A3F077254D37A52D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */,
+				AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		D341B34922A3FE4000310B75 = {
 			isa = PBXGroup;
 			children = (
 				D341B35422A3FE4000310B75 /* MultipeerConnectivityChat */,
 				D341B35322A3FE4000310B75 /* Products */,
+				778E15F3A3F077254D37A52D /* Pods */,
+				E3DF97DE8959E24346356505 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,14 +87,29 @@
 			isa = PBXGroup;
 			children = (
 				D341B36122A3FE4100310B75 /* Info.plist */,
+				D39AAC5622D3518C00670C59 /* AnimationLabel.swift */,
 				D341B35522A3FE4000310B75 /* AppDelegate.swift */,
-				D341B36922A4027E00310B75 /* ChatViewController.swift */,
-				D341B36722A3FEFB00310B75 /* MultipeerChatService.swift */,
+				D39AAC5422D34C6500670C59 /* Array+isNotEmpty.swift */,
+				D393540222D2E74C001D8CD1 /* BattleManager.swift */,
+				D341B36922A4027E00310B75 /* HomeViewController.swift */,
+				D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */,
+				D33A7A5122CD9CC8006B2918 /* QuizData.swift */,
+				D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */,
+				D393540022D2E717001D8CD1 /* ResultViewController.swift */,
+				D3C18A6122CC8B6B0071EA29 /* User.swift */,
 				D341B35C22A3FE4100310B75 /* Assets.xcassets */,
 				D341B35E22A3FE4100310B75 /* LaunchScreen.storyboard */,
 				D341B35922A3FE4000310B75 /* Main.storyboard */,
 			);
 			path = MultipeerConnectivityChat;
+			sourceTree = "<group>";
+		};
+		E3DF97DE8959E24346356505 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				59429BC8B1379C4C3F2A9CAC /* Pods_MultipeerConnectivityChat.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +119,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D341B36422A3FE4100310B75 /* Build configuration list for PBXNativeTarget "MultipeerConnectivityChat" */;
 			buildPhases = (
+				6CA2961FB068B4B3B535C2CD /* [CP] Check Pods Manifest.lock */,
 				D341B34E22A3FE4000310B75 /* Sources */,
 				D341B34F22A3FE4000310B75 /* Frameworks */,
 				D341B35022A3FE4000310B75 /* Resources */,
+				A2850928DCD3E9F836FE9002 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,14 +180,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6CA2961FB068B4B3B535C2CD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MultipeerConnectivityChat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A2850928DCD3E9F836FE9002 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D341B34E22A3FE4000310B75 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D393540322D2E74C001D8CD1 /* BattleManager.swift in Sources */,
+				D39AAC5522D34C6500670C59 /* Array+isNotEmpty.swift in Sources */,
+				D33A7A5222CD9CC8006B2918 /* QuizData.swift in Sources */,
 				D341B35622A3FE4000310B75 /* AppDelegate.swift in Sources */,
-				D341B36A22A4027E00310B75 /* ChatViewController.swift in Sources */,
-				D341B36822A3FEFB00310B75 /* MultipeerChatService.swift in Sources */,
+				D341B36A22A4027E00310B75 /* HomeViewController.swift in Sources */,
+				D393540122D2E717001D8CD1 /* ResultViewController.swift in Sources */,
+				D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */,
+				D39AAC5722D3518C00670C59 /* AnimationLabel.swift in Sources */,
+				D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */,
+				D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +380,7 @@
 		};
 		D341B36522A3FE4100310B75 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -302,6 +399,7 @@
 		};
 		D341B36622A3FE4100310B75 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
