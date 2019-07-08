@@ -155,27 +155,39 @@ class QuizViewController: UIViewController {
         }
         BattleManager.shared.me.updateAnsweredDate(Date())
         DispatchQueue.global(qos: .default).async {
-            BattleManager.shared.sendIfIAmHost()
+            BattleManager.shared.sendIfIAmHost(BattleManager.shared.me.isHost!)
         }
     }
 }
 
 extension QuizViewController: QuizSessionAPI {
-    func requestStartQuizIfHost(service: MultipeerQuizService, data: User) {
-        if BattleManager.shared.me.isHost?.rawValue == true {
+    
+    func recievedOpponentData(service: MultipeerQuizService, data: User) {
+        DispatchQueue.main.async {
             BattleManager.shared.opponent = data
+            guard let presentedViewController = self.presentedViewController as? ResultViewController else { return }
+            DispatchQueue.main.async {
+                presentedViewController.setResultData()
+            }
+            if BattleManager.shared.me.isHost?.rawValue != true {
+                BattleManager.shared.sendMyData()
+            }
+        }
+    }
+    
+    func requestStartQuizIfHost(service: MultipeerQuizService) {
+        if BattleManager.shared.me.isHost?.rawValue == true {
             self.startNextQuiz()
         }
     }
     
-    func informBattlerAlreadyCleared(service: MultipeerQuizService, data: User) {
+    func informBattlerAlreadyCleared(service: MultipeerQuizService) {
         DispatchQueue.main.async {
             HUD.show(.label("相手が先に回答しました..."))
             HUD.hide(afterDelay: 1.0)
-            BattleManager.shared.opponent = data
             DispatchQueue.global(qos: .default).async {
                 if BattleManager.shared.me.isHost?.rawValue != true {
-                    BattleManager.shared.sendIfIAmHost()
+                    BattleManager.shared.sendIfIAmHost(IsHost(rawValue: false))
                 }
             }
         }

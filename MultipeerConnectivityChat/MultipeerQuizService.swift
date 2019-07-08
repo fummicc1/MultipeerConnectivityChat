@@ -5,6 +5,7 @@ protocol QuizSessionAPI: class {
     func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID)
     func requestStartQuizIfHost(service: MultipeerQuizService)
     func informBattlerAlreadyCleared(service: MultipeerQuizService)
+    func recievedOpponentData(service: MultipeerQuizService, data: User)
 }
 
 protocol MCSessionAPI: class {
@@ -103,6 +104,8 @@ extension MultipeerQuizService: MCSessionDelegate {
             } else {
                 BattleManager.shared.quizDelegate?.requestStartQuizIfHost(service: self)
             }
+        } else if let opponent = try? JSONDecoder().decode(User.self, from: data) {
+            BattleManager.shared.quizDelegate?.recievedOpponentData(service: self, data: opponent)
         }
     }
     

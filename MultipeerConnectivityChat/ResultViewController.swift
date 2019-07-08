@@ -3,22 +3,16 @@ import UIKit
 class ResultViewController: UIViewController {
 
     @IBOutlet var resultLabel: UILabel!
-    @IBOutlet var scoreLabel: UILabel!
+    @IBOutlet var myScoreLabel: UILabel!
+    @IBOutlet var opponentScoreLabel: UILabel!
     
     var gradientLayer: CAGradientLayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if BattleManager.shared.me.score > BattleManager.shared.opponent?.score ?? 0 {
-            resultLabel.text = "勝利！！"
-            createGradientView(isWin: true)
-        } else if BattleManager.shared.me.score < BattleManager.shared.opponent?.score ?? 0 {
-            resultLabel.text = "敗北..!"
-            createGradientView(isWin: false)
-        } else {
-            resultLabel.text = "同点〜"
+        if BattleManager.shared.me.isHost?.rawValue == true {
+            BattleManager.shared.sendMyData()
         }
-        scoreLabel.text = "\(BattleManager.shared.me.score)点"
     }
     
     func createGradientView(isWin: Bool) {
@@ -49,7 +43,25 @@ class ResultViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        if gradientLayer == nil { return }
         gradientLayer.frame = view.bounds
+    }
+    
+    func setResultData() {
+        guard let opponent = BattleManager.shared.opponent else {
+            return
+        }
+        if BattleManager.shared.me.score > opponent.score {
+            resultLabel.text = "勝利！！"
+            createGradientView(isWin: true)
+        } else if BattleManager.shared.me.score < opponent.score {
+            resultLabel.text = "敗北..!"
+            createGradientView(isWin: false)
+        } else {
+            resultLabel.text = "同点〜"
+        }
+        myScoreLabel.text = "\(BattleManager.shared.me.score)点"
+        opponentScoreLabel.text = "\(opponent.score)点"
     }
     
     @IBAction func retry() {

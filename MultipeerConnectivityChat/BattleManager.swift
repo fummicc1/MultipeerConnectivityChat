@@ -35,6 +35,10 @@ extension BattleManager {
         service.startObserving(isHost: isHost)
     }
     
+    public func sendMyData() {
+        service.send(data: me)
+    }
+    
     public func resetGame() {
         opponent = nil
         me.clearScore()
