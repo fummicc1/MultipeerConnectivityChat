@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,8 +14,9 @@
 		D341B35D22A3FE4100310B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D341B35C22A3FE4100310B75 /* Assets.xcassets */; };
 		D341B36022A3FE4100310B75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D341B35E22A3FE4100310B75 /* LaunchScreen.storyboard */; };
 		D341B36A22A4027E00310B75 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B36922A4027E00310B75 /* HomeViewController.swift */; };
+		D393540122D2E717001D8CD1 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393540022D2E717001D8CD1 /* ResultViewController.swift */; };
+		D393540322D2E74C001D8CD1 /* BattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393540222D2E74C001D8CD1 /* BattleManager.swift */; };
 		D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */; };
-		D3C18A6022CC8A300071EA29 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A5F22CC8A300071EA29 /* QuizModel.swift */; };
 		D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6122CC8B6B0071EA29 /* User.swift */; };
 		D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */; };
 /* End PBXBuildFile section */
@@ -32,8 +33,9 @@
 		D341B35F22A3FE4100310B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D341B36122A3FE4100310B75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D341B36922A4027E00310B75 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D393540022D2E717001D8CD1 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		D393540222D2E74C001D8CD1 /* BattleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleManager.swift; sourceTree = "<group>"; };
 		D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
-		D3C18A5F22CC8A300071EA29 /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
 		D3C18A6122CC8B6B0071EA29 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipeerQuizService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,7 +58,6 @@
 				6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */,
 				AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -83,11 +84,12 @@
 			children = (
 				D341B36122A3FE4100310B75 /* Info.plist */,
 				D341B35522A3FE4000310B75 /* AppDelegate.swift */,
+				D393540222D2E74C001D8CD1 /* BattleManager.swift */,
 				D341B36922A4027E00310B75 /* HomeViewController.swift */,
 				D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */,
 				D33A7A5122CD9CC8006B2918 /* QuizData.swift */,
-				D3C18A5F22CC8A300071EA29 /* QuizModel.swift */,
 				D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */,
+				D393540022D2E717001D8CD1 /* ResultViewController.swift */,
 				D3C18A6122CC8B6B0071EA29 /* User.swift */,
 				D341B35C22A3FE4100310B75 /* Assets.xcassets */,
 				D341B35E22A3FE4100310B75 /* LaunchScreen.storyboard */,
@@ -219,12 +221,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D393540322D2E74C001D8CD1 /* BattleManager.swift in Sources */,
 				D33A7A5222CD9CC8006B2918 /* QuizData.swift in Sources */,
 				D341B35622A3FE4000310B75 /* AppDelegate.swift in Sources */,
 				D341B36A22A4027E00310B75 /* HomeViewController.swift in Sources */,
+				D393540122D2E717001D8CD1 /* ResultViewController.swift in Sources */,
 				D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */,
 				D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */,
-				D3C18A6022CC8A300071EA29 /* QuizModel.swift in Sources */,
 				D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

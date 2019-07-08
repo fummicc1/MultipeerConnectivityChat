@@ -4,7 +4,6 @@ import PKHUD
 
 class HomeViewController: UIViewController {
     
-    private var quizModel: QuizModel?
     var quizViewController: QuizViewController?
     
     @IBOutlet var joinRoomButton: UIButton!
@@ -20,17 +19,18 @@ class HomeViewController: UIViewController {
     
     func setup() {
         quizViewController = storyboard?.instantiateViewController(withIdentifier: "quizViewController") as? QuizViewController
-        quizModel = QuizModel(quizDelegate: quizViewController!, service: MultipeerQuizService(), connectionDelegate: self)
+        BattleManager.shared.quizDelegate = quizViewController
+        BattleManager.shared.connectionDelegate = self
     }
     
     @IBAction func tappedCreateRoomButton() {
-        quizModel?.user.isHost = IsHost(rawValue: true)
-        quizModel?.startObserving(isHost: true)
+        BattleManager.shared.me.setIsHost(true)
+        BattleManager.shared.startObserving(isHost: true)
     }
     
     @IBAction func tappedJoinRoomButton() {
-        quizModel?.user.isHost = IsHost(rawValue: false)
-        quizModel?.startObserving(isHost: false)
+        BattleManager.shared.me.setIsHost(false)
+        BattleManager.shared.startObserving(isHost: false)
     }
 }
 
@@ -39,9 +39,8 @@ extension HomeViewController: MCSessionAPI {
          DispatchQueue.main.async {
             HUD.flash(.label("接続完了"))
             guard let quizViewController = self.quizViewController else { return }
-            quizViewController.model = self.quizModel
             self.present(quizViewController, animated: true, completion: {
-                self.quizModel?.stopObseving()
+                BattleManager.shared.stopObseving()
             })
         }
     }

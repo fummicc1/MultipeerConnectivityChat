@@ -2,7 +2,6 @@ import Foundation
 import MultipeerConnectivity
 
 protocol QuizSessionAPI: class {
-    func opponentDataRecieved(service: MultipeerQuizService, data: User)
     func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID)
     func requestStartQuizIfHost(service: MultipeerQuizService)
     func informBattlerAlreadyCleared(service: MultipeerQuizService)
@@ -16,26 +15,22 @@ class MultipeerQuizService: NSObject {
     
     static let QuizServiceType = "quiz-service" // this is an identity less than 15 characters long.
     
-    weak var quizDelegate: QuizSessionAPI?
-    weak var connectionDelegate: MCSessionAPI?
-    let myPeerID = MCPeerID(displayName: UIDevice.current.name)
-    var currentBattleID: MCPeerID?
-    private let serviceAdvertiser: MCNearbyServiceAdvertiser
-    private let serviceBrowser: MCNearbyServiceBrowser
+    private lazy var serviceAdvertiser: MCNearbyServiceAdvertiser = {
+        let serviceAdvertiser = MCNearbyServiceAdvertiser(peer: BattleManager.shared.me.peer!, discoveryInfo: nil, serviceType: MultipeerQuizService.QuizServiceType)
+        serviceAdvertiser.delegate = self
+        return serviceAdvertiser
+    }()
+    private lazy var  serviceBrowser: MCNearbyServiceBrowser = {
+        let serviceBrowser = MCNearbyServiceBrowser(peer: BattleManager.shared.me.peer!, serviceType: MultipeerQuizService.QuizServiceType)
+        serviceBrowser.delegate = self
+        return serviceBrowser
+    }()
     
-    lazy var session: MCSession = {
-        let session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .required)
+    lazy var session: MCSession = {        
+        let session = MCSession(peer: BattleManager.shared.me.peer!, securityIdentity: nil, encryptionPreference: .required)
         session.delegate = self
         return session
     }()
-    
-    override init() {
-        serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: nil, serviceType: MultipeerQuizService.QuizServiceType)
-        serviceBrowser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: MultipeerQuizService.QuizServiceType)        
-        super.init()
-        serviceAdvertiser.delegate = self
-        serviceBrowser.delegate = self
-    }
     
     deinit {
         stopObseving()
@@ -58,7 +53,7 @@ class MultipeerQuizService: NSObject {
 extension MultipeerQuizService: MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        if currentBattleID == nil {
+        if BattleManager.shared.opponent == nil {
             invitationHandler(true, session)
         } else {
             invitationHandler(false, nil)
@@ -68,14 +63,21 @@ extension MultipeerQuizService: MCNearbyServiceAdvertiserDelegate {
 
 extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        if currentBattleID != nil { return }
-        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 5)        
+        guard BattleManager.shared.opponent == nil else {
+            return
+        }
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 5)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        if let currentBattleID = currentBattleID, !session.connectedPeers.contains(currentBattleID) {
-            self.currentBattleID = nil
+        
+        guard
+            let opponent = BattleManager.shared.opponent,
+            let peer = opponent.peer,
+            !session.connectedPeers.contains(peer) else {
+            return
         }
+        BattleManager.shared.opponent = nil
     }
 }
 
@@ -83,22 +85,21 @@ extension MultipeerQuizService: MCSessionDelegate {
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         if state == .connected {
-            currentBattleID = peerID
-            connectionDelegate?.connectionEstablished(service: self, peerID: peerID)
+            BattleManager.shared.opponent = User(peer: peerID)
+            BattleManager.shared.connectionDelegate?.connectionEstablished(service: self, peerID: peerID)
         }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let opponent = try? JSONDecoder().decode(User.self, from: data) {
-            quizDelegate?.opponentDataRecieved(service: self, data: opponent)
+        if let opponent = try? JSONDecoder().decode(User.self, from: data) {            
         } else if let quizList = try? JSONDecoder().decode([QuizData].self, from: data) {
-            quizDelegate?.quizListRecieved(service: self, data: quizList, from: peerID)
+            BattleManager.shared.quizDelegate?.quizListRecieved(service: self, data: quizList, from: peerID)
         } else if let isHost = try? JSONDecoder().decode(IsHost.self, from: data) {
             // isHostは送信者の状態。
             if isHost.rawValue {
-                quizDelegate?.informBattlerAlreadyCleared(service: self)
+                BattleManager.shared.quizDelegate?.informBattlerAlreadyCleared(service: self)
             } else {
-                quizDelegate?.requestStartQuizIfHost(service: self)
+                BattleManager.shared.quizDelegate?.requestStartQuizIfHost(service: self)
             }
         }
     }
@@ -115,9 +116,9 @@ extension MultipeerQuizService: MCSessionDelegate {
 
 extension MultipeerQuizService {
     func send<T: Codable>(data: T) {
-        guard let currentBattleID = currentBattleID, let data = try? JSONEncoder().encode(data) else {
+        guard let opponent = BattleManager.shared.opponent, let peer = opponent.peer, let data = try? JSONEncoder().encode(data) else {
             return
         }
-        try! session.send(data, toPeers: [currentBattleID], with: .reliable)
+        try! session.send(data, toPeers: [peer], with: .reliable)
     }
 }

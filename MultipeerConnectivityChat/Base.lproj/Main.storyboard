@@ -182,5 +182,42 @@
             </objects>
             <point key="canvasLocation" x="982.60869565217399" y="129.91071428571428"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="QUS-9O-pZF">
+            <objects>
+                <viewController id="1u4-y7-YxJ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="N03-kQ-Q30">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1e-ho-mK7">
+                                <rect key="frame" x="0.0" y="745" width="414" height="117"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.98431372549999996" green="0.95306998239999996" blue="0.68373129399999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                <state key="normal" title="もう一度">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="結果画面" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tyW-3S-Ich">
+                                <rect key="frame" x="32" y="76" width="350" height="48"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="COm-ui-1FR" firstAttribute="trailing" secondItem="tyW-3S-Ich" secondAttribute="trailing" constant="32" id="LGL-fl-ZrV"/>
+                            <constraint firstItem="tyW-3S-Ich" firstAttribute="leading" secondItem="COm-ui-1FR" secondAttribute="leading" constant="32" id="S1P-l4-g15"/>
+                            <constraint firstItem="tyW-3S-Ich" firstAttribute="top" secondItem="COm-ui-1FR" secondAttribute="top" constant="32" id="jPp-dg-dp8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="COm-ui-1FR"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bAv-3e-15w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1928.985507246377" y="129.91071428571428"/>
+        </scene>
     </scenes>
 </document>

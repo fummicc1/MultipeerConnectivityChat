@@ -11,8 +11,6 @@ class QuizViewController: UIViewController {
     @IBOutlet private weak var choiceButton1: UIButton!
     @IBOutlet private weak var choiceButton2: UIButton!
     
-    var model: QuizModel?
-    
     var opponentAnsweredText: String = "問1." {
         didSet {
             quizChapterLabel.text = opponentAnsweredText
@@ -95,9 +93,9 @@ class QuizViewController: UIViewController {
     
     func startQuiz() {
         setTag()
-        if model?.user.isHost?.rawValue == true {
+        if BattleManager.shared.me.isHost?.rawValue == true {
             quizContentLabel.text = ""
-            model?.sendQuiz(quizList: quizList)
+            BattleManager.shared.sendQuiz(quizList: quizList)
         }
     }
     
@@ -125,18 +123,18 @@ class QuizViewController: UIViewController {
     
     @IBAction func tappedAnswerButton(sender: UIButton) {
         if sender.tag == 10 {
-            model?.user.score += 10
+            BattleManager.shared.me.getScore(10)
             HUD.show(.label("正解！"))
             HUD.hide(afterDelay: 1.0)
-            model?.user.haveChosenCorrectAnswer = true
+            BattleManager.shared.me.playerStateChanged(true)
         } else if sender.tag == 11 {
             HUD.show(.label("不正解..."))
             HUD.hide(afterDelay: 1.0)
-            model?.user.haveChosenCorrectAnswer = false
+            BattleManager.shared.me.playerStateChanged(false)
         }
-        model?.user.answeredDate = Date()
-        quizList.removeFirst()        
-        model?.sendIfIAmHost(model!.user.isHost!)
+        BattleManager.shared.me.updateAnsweredDate(Date())
+        quizList.removeFirst()
+        BattleManager.shared.sendIfIAmHost(BattleManager.shared.me.isHost!)
     }
 }
 
@@ -144,7 +142,8 @@ extension QuizViewController: QuizSessionAPI {
     
     func requestStartQuizIfHost(service: MultipeerQuizService) {
         DispatchQueue.main.async {
-            if self.model?.user.isHost?.rawValue == true {
+            if BattleManager.shared.me.isHost?.rawValue == true {
+                self.quizList.removeFirst()
                 self.startQuiz()
             }
         }
@@ -152,10 +151,10 @@ extension QuizViewController: QuizSessionAPI {
     
     func informBattlerAlreadyCleared(service: MultipeerQuizService) {
         DispatchQueue.main.async {
-            if self.model?.user.isHost?.rawValue != true {
+            if BattleManager.shared.me.isHost?.rawValue != true {
                 HUD.show(.label("相手が先に回答しました..."))
                 HUD.hide(afterDelay: 1.0)
-                self.model?.sendIfIAmHost(IsHost(rawValue: false))
+                BattleManager.shared.sendIfIAmHost(IsHost(rawValue: false))
             }
         }
     }
@@ -164,32 +163,12 @@ extension QuizViewController: QuizSessionAPI {
         self.quizList = data
         DispatchQueue.main.async {
             DispatchQueue.global().async {
-                if self.model?.user.isHost?.rawValue != true {
-                    let data = try! JSONEncoder().encode(data)
-                    try! self.model?.service.session.send(data, toPeers: [peerID], with: .reliable)
+                if BattleManager.shared.me.isHost?.rawValue != true {                    
+                    BattleManager.shared.sendQuiz(quizList: data)
                 }
             }
             self.quizContentLabel.text = ""
             self.displayQuiz(self.quizList)
-        }
-    }
-    
-    func opponentDataRecieved(service: MultipeerQuizService, data: User) {
-        model?.opponent = data
-        DispatchQueue.main.async {
-            if data.haveChosenCorrectAnswer == true {
-                HUD.show(.label("相手が先に回答しました!\n次のバトルへ移ります。"))
-                HUD.hide(afterDelay: 1.0, completion: { success in
-                    if success, self.model?.user.isHost?.rawValue == true {
-                        self.startQuiz()
-                    } else if success {
-                        self.model?.requestStartQuizToHost()
-                    }
-                })
-            } else {
-                HUD.show(.label("相手が間違えました!\nチャンスです。ゆっくり考えましょう！"))
-                HUD.hide(afterDelay: 1.0)
-            }
         }
     }
 }
