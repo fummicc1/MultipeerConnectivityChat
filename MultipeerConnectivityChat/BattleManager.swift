@@ -38,6 +38,7 @@ extension BattleManager {
     public func resetGame() {
         opponent = nil
         me.clearScore()
+        me.clearState()
         connectionDelegate = nil
         quizDelegate = nil
     }

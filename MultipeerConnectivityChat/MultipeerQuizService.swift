@@ -26,7 +26,7 @@ class MultipeerQuizService: NSObject {
         return serviceBrowser
     }()
     
-    lazy var session: MCSession = {        
+    lazy var mainSession: MCSession = {
         let session = MCSession(peer: BattleManager.shared.me.peer!, securityIdentity: nil, encryptionPreference: .required)
         session.delegate = self
         return session
@@ -54,7 +54,7 @@ extension MultipeerQuizService: MCNearbyServiceAdvertiserDelegate {
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         if BattleManager.shared.opponent == nil {
-            invitationHandler(true, session)
+            invitationHandler(true, mainSession)
         } else {
             invitationHandler(false, nil)
         }
@@ -66,7 +66,7 @@ extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
         guard BattleManager.shared.opponent == nil else {
             return
         }
-        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 5)
+        browser.invitePeer(peerID, to: mainSession, withContext: nil, timeout: 5)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -74,7 +74,7 @@ extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
         guard
             let opponent = BattleManager.shared.opponent,
             let peer = opponent.peer,
-            !session.connectedPeers.contains(peer) else {
+            !mainSession.connectedPeers.contains(peer) else {
             return
         }
         BattleManager.shared.opponent = nil
@@ -87,12 +87,14 @@ extension MultipeerQuizService: MCSessionDelegate {
         if state == .connected {
             BattleManager.shared.opponent = User(peer: peerID)
             BattleManager.shared.connectionDelegate?.connectionEstablished(service: self, peerID: peerID)
+        } else if state == .connecting {
+        } else if state == .notConnected {
+            fatalError("not connected")
         }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let opponent = try? JSONDecoder().decode(User.self, from: data) {            
-        } else if let quizList = try? JSONDecoder().decode([QuizData].self, from: data) {
+        if let quizList = try? JSONDecoder().decode([QuizData].self, from: data) {
             BattleManager.shared.quizDelegate?.quizListRecieved(service: self, data: quizList, from: peerID)
         } else if let isHost = try? JSONDecoder().decode(IsHost.self, from: data) {
             // isHostは送信者の状態。
@@ -119,6 +121,12 @@ extension MultipeerQuizService {
         guard let opponent = BattleManager.shared.opponent, let peer = opponent.peer, let data = try? JSONEncoder().encode(data) else {
             return
         }
-        try! session.send(data, toPeers: [peer], with: .reliable)
+        DispatchQueue.global(qos: .default).async {
+            do {
+                try self.mainSession.send(data, toPeers: [peer], with: .reliable)
+            } catch(let error) {
+                print(error)
+            }
+        }
     }
 }

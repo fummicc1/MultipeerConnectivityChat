@@ -5,7 +5,7 @@ import MultipeerConnectivity
 class QuizViewController: UIViewController {
     
     @IBOutlet private weak var quizChapterLabel: UILabel!
-    @IBOutlet private weak var quizContentLabel: UILabel!
+    @IBOutlet private weak var quizContentLabel: AnimationLabel!
     @IBOutlet private weak var answerViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var answerView: UIView!
     @IBOutlet private weak var choiceButton1: UIButton!
@@ -21,6 +21,10 @@ class QuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         populateQuizData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         startQuiz()
     }
     
@@ -29,6 +33,7 @@ class QuizViewController: UIViewController {
         let touch = touches.first!
         if touch.phase == .began {
             manageViewHeight()
+            HUD.hide()
         }
     }
     
@@ -94,8 +99,25 @@ class QuizViewController: UIViewController {
     func startQuiz() {
         setTag()
         if BattleManager.shared.me.isHost?.rawValue == true {
-            quizContentLabel.text = ""
-            BattleManager.shared.sendQuiz(quizList: quizList)
+            DispatchQueue.global(qos: .default).async {
+                BattleManager.shared.sendQuiz(quizList: self.quizList)
+            }            
+        }
+    }
+    
+    func startNextQuiz() {
+        if BattleManager.shared.me.isHost?.rawValue == true {
+            quizList.removeFirst()
+            DispatchQueue.global(qos: .default).async {
+                BattleManager.shared.sendQuiz(quizList: self.quizList)
+            }
+        }
+        DispatchQueue.main.async {
+            self.setTag()
+            if self.quizList.isEmpty {
+                guard let resultViewController = self.storyboard?.instantiateViewController(withIdentifier: "ResultViewController") else { return }
+                self.present(resultViewController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -109,10 +131,8 @@ class QuizViewController: UIViewController {
             self.choiceButton1.setTitle(quiz.fault, for: .normal)
             self.choiceButton2.setTitle(quiz.answer, for: .normal)
         }
-        for c in quiz.question {
-            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
-            quizContentLabel.text?.append(c)
-        }
+        quizContentLabel.title = quiz.question
+        quizContentLabel.animate()
     }
     
     func setTag() {
@@ -129,32 +149,34 @@ class QuizViewController: UIViewController {
             BattleManager.shared.me.playerStateChanged(true)
         } else if sender.tag == 11 {
             HUD.show(.label("不正解..."))
+            BattleManager.shared.me.getScore(-10)
             HUD.hide(afterDelay: 1.0)
             BattleManager.shared.me.playerStateChanged(false)
         }
         BattleManager.shared.me.updateAnsweredDate(Date())
-        quizList.removeFirst()
-        BattleManager.shared.sendIfIAmHost(BattleManager.shared.me.isHost!)
+        DispatchQueue.global(qos: .default).async {
+            BattleManager.shared.sendIfIAmHost()
+        }
     }
 }
 
 extension QuizViewController: QuizSessionAPI {
-    
-    func requestStartQuizIfHost(service: MultipeerQuizService) {
-        DispatchQueue.main.async {
-            if BattleManager.shared.me.isHost?.rawValue == true {
-                self.quizList.removeFirst()
-                self.startQuiz()
-            }
+    func requestStartQuizIfHost(service: MultipeerQuizService, data: User) {
+        if BattleManager.shared.me.isHost?.rawValue == true {
+            BattleManager.shared.opponent = data
+            self.startNextQuiz()
         }
     }
     
-    func informBattlerAlreadyCleared(service: MultipeerQuizService) {
+    func informBattlerAlreadyCleared(service: MultipeerQuizService, data: User) {
         DispatchQueue.main.async {
-            if BattleManager.shared.me.isHost?.rawValue != true {
-                HUD.show(.label("相手が先に回答しました..."))
-                HUD.hide(afterDelay: 1.0)
-                BattleManager.shared.sendIfIAmHost(IsHost(rawValue: false))
+            HUD.show(.label("相手が先に回答しました..."))
+            HUD.hide(afterDelay: 1.0)
+            BattleManager.shared.opponent = data
+            DispatchQueue.global(qos: .default).async {
+                if BattleManager.shared.me.isHost?.rawValue != true {
+                    BattleManager.shared.sendIfIAmHost()
+                }
             }
         }
     }
@@ -162,13 +184,19 @@ extension QuizViewController: QuizSessionAPI {
     func quizListRecieved(service: MultipeerQuizService, data: [QuizData], from peerID: MCPeerID) {
         self.quizList = data
         DispatchQueue.main.async {
-            DispatchQueue.global().async {
+            if data.isEmpty {
+                guard let resultViewController = self.storyboard?.instantiateViewController(withIdentifier: "ResultViewController") else { return }
+                self.present(resultViewController, animated: true, completion: nil)
+                return
+            }
+            DispatchQueue.global(qos: .default).async {
                 if BattleManager.shared.me.isHost?.rawValue != true {                    
                     BattleManager.shared.sendQuiz(quizList: data)
                 }
-            }
-            self.quizContentLabel.text = ""
+            }            
             self.displayQuiz(self.quizList)
         }
     }
+    
+    
 }

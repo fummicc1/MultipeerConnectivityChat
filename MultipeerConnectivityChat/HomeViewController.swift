@@ -11,14 +11,13 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
-        
+        setup()        
         joinRoomButton.layer.cornerRadius = 30
         createRoomButton.layer.cornerRadius = 30
     }
     
     func setup() {
-        quizViewController = storyboard?.instantiateViewController(withIdentifier: "quizViewController") as? QuizViewController
+        quizViewController = storyboard?.instantiateViewController(withIdentifier: "QuizViewController") as? QuizViewController
         BattleManager.shared.quizDelegate = quizViewController
         BattleManager.shared.connectionDelegate = self
     }

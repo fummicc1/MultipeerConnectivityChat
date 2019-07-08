@@ -52,6 +52,10 @@ struct User: Codable {
         score = 0
     }
     
+    public mutating func clearState() {
+        isHost = nil
+    }
+    
     enum CodingKeys: String, CodingKey {
         case score
         case havefinishedAllQuestions

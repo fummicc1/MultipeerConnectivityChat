@@ -43,7 +43,7 @@ class ResultViewController: UIViewController {
                 amber.cgColor,
                 purple.cgColor,
             ]
-        }
+        }        
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     

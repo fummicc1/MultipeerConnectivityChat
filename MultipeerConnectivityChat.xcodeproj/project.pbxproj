@@ -16,6 +16,8 @@
 		D341B36A22A4027E00310B75 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B36922A4027E00310B75 /* HomeViewController.swift */; };
 		D393540122D2E717001D8CD1 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393540022D2E717001D8CD1 /* ResultViewController.swift */; };
 		D393540322D2E74C001D8CD1 /* BattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D393540222D2E74C001D8CD1 /* BattleManager.swift */; };
+		D39AAC5522D34C6500670C59 /* Array+isNotEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39AAC5422D34C6500670C59 /* Array+isNotEmpty.swift */; };
+		D39AAC5722D3518C00670C59 /* AnimationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39AAC5622D3518C00670C59 /* AnimationLabel.swift */; };
 		D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */; };
 		D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6122CC8B6B0071EA29 /* User.swift */; };
 		D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */; };
@@ -35,6 +37,8 @@
 		D341B36922A4027E00310B75 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D393540022D2E717001D8CD1 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		D393540222D2E74C001D8CD1 /* BattleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleManager.swift; sourceTree = "<group>"; };
+		D39AAC5422D34C6500670C59 /* Array+isNotEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+isNotEmpty.swift"; sourceTree = "<group>"; };
+		D39AAC5622D3518C00670C59 /* AnimationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationLabel.swift; sourceTree = "<group>"; };
 		D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		D3C18A6122CC8B6B0071EA29 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipeerQuizService.swift; sourceTree = "<group>"; };
@@ -83,7 +87,9 @@
 			isa = PBXGroup;
 			children = (
 				D341B36122A3FE4100310B75 /* Info.plist */,
+				D39AAC5622D3518C00670C59 /* AnimationLabel.swift */,
 				D341B35522A3FE4000310B75 /* AppDelegate.swift */,
+				D39AAC5422D34C6500670C59 /* Array+isNotEmpty.swift */,
 				D393540222D2E74C001D8CD1 /* BattleManager.swift */,
 				D341B36922A4027E00310B75 /* HomeViewController.swift */,
 				D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */,
@@ -222,11 +228,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D393540322D2E74C001D8CD1 /* BattleManager.swift in Sources */,
+				D39AAC5522D34C6500670C59 /* Array+isNotEmpty.swift in Sources */,
 				D33A7A5222CD9CC8006B2918 /* QuizData.swift in Sources */,
 				D341B35622A3FE4000310B75 /* AppDelegate.swift in Sources */,
 				D341B36A22A4027E00310B75 /* HomeViewController.swift in Sources */,
 				D393540122D2E717001D8CD1 /* ResultViewController.swift in Sources */,
 				D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */,
+				D39AAC5722D3518C00670C59 /* AnimationLabel.swift in Sources */,
 				D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */,
 				D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */,
 			);
