@@ -71,14 +71,13 @@ extension MultipeerQuizService: MCNearbyServiceBrowserDelegate {
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        
         guard
             let opponent = BattleManager.shared.opponent,
-            let peer = opponent.peer,
-            !mainSession.connectedPeers.contains(peer) else {
+            mainSession.connectedPeers.isEmpty else {
             return
         }
         BattleManager.shared.opponent = nil
+        browser.invitePeer(peerID, to: mainSession, withContext: nil, timeout: 5)
     }
 }
 
@@ -121,12 +120,12 @@ extension MultipeerQuizService: MCSessionDelegate {
 
 extension MultipeerQuizService {
     func send<T: Codable>(data: T) {
-        guard let opponent = BattleManager.shared.opponent, let peer = opponent.peer, let data = try? JSONEncoder().encode(data) else {
+        guard let _ = BattleManager.shared.opponent, let data = try? JSONEncoder().encode(data) else {
             return
         }
         DispatchQueue.global(qos: .default).async {
             do {
-                try self.mainSession.send(data, toPeers: [peer], with: .reliable)
+                try self.mainSession.send(data, toPeers: self.mainSession.connectedPeers, with: .reliable)
             } catch(let error) {
                 print(error)
             }

@@ -21,6 +21,8 @@ class QuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         populateQuizData()
+        let hideGesture = UITapGestureRecognizer(target: self, action: #selector(hideHUD))
+        (UIApplication.shared.delegate as! AppDelegate).window?.addGestureRecognizer(hideGesture)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,8 +35,11 @@ class QuizViewController: UIViewController {
         let touch = touches.first!
         if touch.phase == .began {
             manageViewHeight()
-            HUD.hide()
         }
+    }
+    
+    @objc private func hideHUD() {
+        HUD.hide()
     }
     
     func populateQuizData() {
@@ -122,7 +127,7 @@ class QuizViewController: UIViewController {
     }
     
     func displayQuiz(_ quizList: [QuizData]) {
-        self.quizChapterLabel.text = "問\(10 - self.quizList.count + 1)."
+        self.quizChapterLabel.text = "問\(9 - self.quizList.count + 1)."
         let quiz = quizList.first!
         if self.choiceButton1.tag == 10 {
             self.choiceButton1.setTitle(quiz.answer, for: .normal)

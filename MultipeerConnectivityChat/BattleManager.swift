@@ -8,7 +8,13 @@ class BattleManager {
     }
     static let shared: BattleManager = BattleManager()
     private var service: MultipeerQuizService
-    var opponent: User?
+    var opponent: User? {
+        didSet {
+            if opponent?.peer == nil {
+                print("opponent peer is nil.")
+            }
+        }
+    }
     var me: User
     weak var connectionDelegate: MCSessionAPI?
     weak var quizDelegate: QuizSessionAPI?
