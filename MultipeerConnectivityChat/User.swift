@@ -24,6 +24,11 @@ struct User: Codable {
         displayName = peer.displayName
     }
     
+    public mutating func refreshQuizStatus() {
+        isCorrectAnswer = nil
+        answeredDate = nil
+    }
+    
     public mutating func updateMyDeviceName(_ deviceName: String) {
         self.displayName = deviceName
     }
