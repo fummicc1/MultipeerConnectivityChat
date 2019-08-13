@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6F5AF6E8EA9817B68DD0D0CB /* Pods_MultipeerConnectivityChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59429BC8B1379C4C3F2A9CAC /* Pods_MultipeerConnectivityChat.framework */; };
 		D33A7A5222CD9CC8006B2918 /* QuizData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33A7A5122CD9CC8006B2918 /* QuizData.swift */; };
 		D341B35622A3FE4000310B75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341B35522A3FE4000310B75 /* AppDelegate.swift */; };
 		D341B35B22A3FE4000310B75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D341B35922A3FE4000310B75 /* Main.storyboard */; };
@@ -21,12 +20,13 @@
 		D3C18A5E22CC88E00071EA29 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A5D22CC88E00071EA29 /* QuizViewController.swift */; };
 		D3C18A6222CC8B6B0071EA29 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6122CC8B6B0071EA29 /* User.swift */; };
 		D3C18A6422CC8E480071EA29 /* MultipeerQuizService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C18A6322CC8E480071EA29 /* MultipeerQuizService.swift */; };
+		D442F6CACF405A65CBD4509D /* Pods_MultipeerConnectivityChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90CBB128EA7BB469A9827D79 /* Pods_MultipeerConnectivityChat.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		59429BC8B1379C4C3F2A9CAC /* Pods_MultipeerConnectivityChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultipeerConnectivityChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipeerConnectivityChat.debug.xcconfig"; path = "Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat.debug.xcconfig"; sourceTree = "<group>"; };
-		AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipeerConnectivityChat.release.xcconfig"; path = "Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat.release.xcconfig"; sourceTree = "<group>"; };
+		90CBB128EA7BB469A9827D79 /* Pods_MultipeerConnectivityChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultipeerConnectivityChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFD7D39325BC1120B0DCFAF9 /* Pods-MultipeerConnectivityChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipeerConnectivityChat.debug.xcconfig"; path = "Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat.debug.xcconfig"; sourceTree = "<group>"; };
+		BE7F3241187E11CAF9C4D596 /* Pods-MultipeerConnectivityChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipeerConnectivityChat.release.xcconfig"; path = "Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat.release.xcconfig"; sourceTree = "<group>"; };
 		D33A7A5122CD9CC8006B2918 /* QuizData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizData.swift; sourceTree = "<group>"; };
 		D341B35222A3FE4000310B75 /* MultipeerConnectivityChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipeerConnectivityChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D341B35522A3FE4000310B75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -49,19 +49,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F5AF6E8EA9817B68DD0D0CB /* Pods_MultipeerConnectivityChat.framework in Frameworks */,
+				D442F6CACF405A65CBD4509D /* Pods_MultipeerConnectivityChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		778E15F3A3F077254D37A52D /* Pods */ = {
+		366EC031C28680BC2A586C93 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */,
-				AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */,
+				AFD7D39325BC1120B0DCFAF9 /* Pods-MultipeerConnectivityChat.debug.xcconfig */,
+				BE7F3241187E11CAF9C4D596 /* Pods-MultipeerConnectivityChat.release.xcconfig */,
 			);
+			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -70,8 +71,8 @@
 			children = (
 				D341B35422A3FE4000310B75 /* MultipeerConnectivityChat */,
 				D341B35322A3FE4000310B75 /* Products */,
-				778E15F3A3F077254D37A52D /* Pods */,
-				E3DF97DE8959E24346356505 /* Frameworks */,
+				366EC031C28680BC2A586C93 /* Pods */,
+				EBB7638A069312F675EC7BD3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,10 +105,10 @@
 			path = MultipeerConnectivityChat;
 			sourceTree = "<group>";
 		};
-		E3DF97DE8959E24346356505 /* Frameworks */ = {
+		EBB7638A069312F675EC7BD3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				59429BC8B1379C4C3F2A9CAC /* Pods_MultipeerConnectivityChat.framework */,
+				90CBB128EA7BB469A9827D79 /* Pods_MultipeerConnectivityChat.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -119,11 +120,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D341B36422A3FE4100310B75 /* Build configuration list for PBXNativeTarget "MultipeerConnectivityChat" */;
 			buildPhases = (
-				6CA2961FB068B4B3B535C2CD /* [CP] Check Pods Manifest.lock */,
+				1A4158D43ADCCE516E1CA130 /* [CP] Check Pods Manifest.lock */,
 				D341B34E22A3FE4000310B75 /* Sources */,
 				D341B34F22A3FE4000310B75 /* Frameworks */,
 				D341B35022A3FE4000310B75 /* Resources */,
-				A2850928DCD3E9F836FE9002 /* [CP] Embed Pods Frameworks */,
+				0FCA4F0B452FCCE9334772FA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -181,7 +182,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6CA2961FB068B4B3B535C2CD /* [CP] Check Pods Manifest.lock */ = {
+		0FCA4F0B452FCCE9334772FA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1A4158D43ADCCE516E1CA130 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -201,23 +219,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A2850928DCD3E9F836FE9002 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MultipeerConnectivityChat/Pods-MultipeerConnectivityChat-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -380,7 +381,7 @@
 		};
 		D341B36522A3FE4100310B75 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FEDC1A776CFD6E6D90C6E2D /* Pods-MultipeerConnectivityChat.debug.xcconfig */;
+			baseConfigurationReference = AFD7D39325BC1120B0DCFAF9 /* Pods-MultipeerConnectivityChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -399,7 +400,7 @@
 		};
 		D341B36622A3FE4100310B75 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AFE3CB7805573FEA1D5915C6 /* Pods-MultipeerConnectivityChat.release.xcconfig */;
+			baseConfigurationReference = BE7F3241187E11CAF9C4D596 /* Pods-MultipeerConnectivityChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
